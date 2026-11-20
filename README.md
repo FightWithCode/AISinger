@@ -111,6 +111,58 @@ aisinger voices
 | `--reverb 0–1` | Reverb added to the new vocal (the original reverb is removed first). |
 | `--vocal-gain dB` | Make the vocal louder or quieter in the mix. |
 
+## Samples & reference
+
+### Example end-to-end session
+
+A typical run: clone a voice from your recordings, then cover a song with it. (Output is abridged and illustrative; timings depend on your GPU.)
+
+```text
+$ aisinger dataset me ~/recordings/
+  ✔ 14 files → 22.5 min of clean singing (resampled, normalised, sliced)
+
+$ aisinger train me --epochs 300
+  epoch  25/300  ✔ saved me_25e_600s.pth
+  ...
+  epoch 300/300  ✔ saved me_300e_7200s.pth
+
+$ aisinger cover "song.mp3" --voice me --key -2
+  [1/5] separating vocals / instrumental
+  [2/5] splitting lead vs backing
+  [3/5] removing reverb
+  [4/5] converting lead vocal → "me"
+  [5/5] mixing
+  ✔ workspace/outputs/song_me.mp3
+```
+
+### Recommended file layout
+
+```text
+~/AISinger/
+├── voices/me/            # trained model (.pth + .index) after `aisinger train`
+├── datasets/me/          # processed training clips
+└── outputs/              # finished covers, e.g. song_me.mp3
+```
+
+Input guidelines for good samples:
+
+| Input | Good example |
+|---|---|
+| Training audio (`aisinger dataset`) | 10–30 min of dry singing, WAV/MP3, one or many files, no background music |
+| Zero-shot reference (`aisinger reference`) | A clean 10–25 s clip of the target voice |
+| Song to cover (`aisinger cover`) | Any MP3/WAV; clearer recordings separate better |
+
+### Demo
+
+> 🎧 **Before / after demo clips: coming soon.**
+> To add yours: edit this README on GitHub, drag an `.mp4` (or a short video of a waveform with audio) into the editor, and GitHub will host it and insert a link. Suggested layout:
+>
+> | Original | Converted |
+> |---|---|
+> | *(drop original clip here)* | *(drop AI cover here)* |
+>
+> Only publish clips of voices you have permission to use, and label them as AI-generated (see [Ethics & legal](#ethics--legal)). Audio files are git-ignored on purpose, so host demos through GitHub's editor or Releases rather than committing them.
+
 ## Getting natural, non-robotic results
 
 1. **Training data is everything.** Use dry singing (no music, no echo), 10–30 minutes, covering your full range. Phone recordings in a quiet room with soft furnishings are fine.

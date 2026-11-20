@@ -5,10 +5,15 @@ build/
 dist/
 # local working data (voices, songs, outputs) — never commit audio or models
 workspace/
+VoiceSamples/
+Songs/
 *.wav
 *.mp3
 *.flac
 *.m4a
+*.mpeg
+*.ogg
+*.opus
 *.pth
 *.index
 *.ckpt
